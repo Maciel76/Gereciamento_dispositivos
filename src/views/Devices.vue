@@ -8,7 +8,9 @@
           Gerencie todos os dispositivos de TI da loja
         </p>
       </div>
-      <BaseButton @click="openAddModal"> ➕ Novo Dispositivo </BaseButton>
+      <BaseButton @click="openAddModal">
+        <Icon icon="mdi:plus-circle" class="btn-icon" /> Novo Dispositivo
+      </BaseButton>
     </div>
 
     <!-- Stats Cards -->
@@ -19,7 +21,7 @@
             class="stat-icon"
             style="background: var(--primary-alpha); color: var(--primary)"
           >
-            🖥️
+            <Icon icon="mdi:point-of-sale" width="32" height="32" />
           </div>
           <div class="stat-info">
             <h3 class="stat-value">{{ devicesStore.devicesByCategory.pdv }}</h3>
@@ -34,7 +36,7 @@
             class="stat-icon"
             style="background: var(--success-light); color: var(--success)"
           >
-            ⚖️
+            <Icon icon="mdi:scale-balance" width="32" height="32" />
           </div>
           <div class="stat-info">
             <h3 class="stat-value">
@@ -51,7 +53,7 @@
             class="stat-icon"
             style="background: var(--warning-light); color: #856404"
           >
-            📱
+            <Icon icon="mdi:barcode-scan" width="32" height="32" />
           </div>
           <div class="stat-info">
             <h3 class="stat-value">
@@ -68,7 +70,7 @@
             class="stat-icon"
             style="background: var(--info-light); color: var(--info)"
           >
-            🖨️
+            <Icon icon="mdi:printer" width="32" height="32" />
           </div>
           <div class="stat-info">
             <h3 class="stat-value">
@@ -85,13 +87,30 @@
             class="stat-icon"
             style="background: var(--secondary-alpha); color: var(--secondary)"
           >
-            💻
+            <Icon icon="mdi:desktop-tower" width="32" height="32" />
           </div>
           <div class="stat-info">
             <h3 class="stat-value">
               {{ devicesStore.devicesByCategory.computador }}
             </h3>
             <p class="stat-label">Computadores</p>
+          </div>
+        </div>
+      </BaseCard>
+
+      <BaseCard hover>
+        <div class="stat-card">
+          <div
+            class="stat-icon"
+            style="background: var(--gray-200); color: var(--gray-700)"
+          >
+            <Icon icon="mdi:devices" width="32" height="32" />
+          </div>
+          <div class="stat-info">
+            <h3 class="stat-value">
+              {{ devicesStore.devicesByCategory.outros }}
+            </h3>
+            <p class="stat-label">Outros</p>
           </div>
         </div>
       </BaseCard>
@@ -109,6 +128,7 @@
             <option value="coletor">Coletor</option>
             <option value="impressora">Impressora</option>
             <option value="computador">Computador</option>
+            <option value="outros">Outros</option>
           </select>
         </div>
 
@@ -244,6 +264,7 @@
               <option value="coletor">Coletor</option>
               <option value="impressora">Impressora</option>
               <option value="computador">Computador</option>
+              <option value="outros">Outros</option>
             </select>
           </div>
 
@@ -348,6 +369,7 @@ import BaseCard from "../components/common/BaseCard.vue";
 import BaseButton from "../components/common/BaseButton.vue";
 import BaseBadge from "../components/common/BaseBadge.vue";
 import BaseModal from "../components/common/BaseModal.vue";
+import { Icon } from "@iconify/vue";
 
 const devicesStore = useDevicesStore();
 
@@ -412,8 +434,9 @@ function getCategoryLabel(category) {
     pdv: "PDV",
     balanca: "Balança",
     coletor: "Coletor",
-    rube: "RUBE",
+    impressora: "Impressora",
     computador: "Computador",
+    outros: "Outros",
   };
   return labels[category] || category;
 }

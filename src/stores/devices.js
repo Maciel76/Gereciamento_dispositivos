@@ -115,6 +115,7 @@ export const useDevicesStore = defineStore("devices", () => {
     coletor: ["Operação", "Conferencia"],
     impressora: ["Adm", "etiqueta", "Nao_fiscal"],
     computador: ["adm", "Outros"],
+    outros: ["Diversos", "Perifericos", "Acessorios"],
   };
 
   // Salvar no localStorage
@@ -141,6 +142,7 @@ export const useDevicesStore = defineStore("devices", () => {
         .length,
       computador: devices.value.filter((d) => d.category === "computador")
         .length,
+      outros: devices.value.filter((d) => d.category === "outros").length,
     };
   });
 

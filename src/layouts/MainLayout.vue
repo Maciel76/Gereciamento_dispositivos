@@ -15,7 +15,9 @@
           class="nav-item"
           active-class="nav-item-active"
         >
-          <span class="nav-icon">{{ route.meta.icon }}</span>
+          <span class="nav-icon">
+            <Icon :icon="route.meta.icon" />
+          </span>
           <span v-if="!isCollapsed" class="nav-text">{{
             route.meta.title
           }}</span>
@@ -76,6 +78,7 @@
 <script setup>
 import { ref, computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import { Icon } from '@iconify/vue';
 
 const route = useRoute();
 const router = useRouter();

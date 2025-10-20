@@ -9,8 +9,10 @@
         </p>
       </div>
       <BaseButton @click="handleCheckAll" :disabled="isChecking">
-        <span v-if="isChecking">⏳ Verificando...</span>
-        <span v-else>🔄 Verificar Todos</span>
+        <Icon v-if="isChecking" icon="mdi:loading" class="btn-icon spinning" />
+        <Icon v-else icon="mdi:refresh" class="btn-icon" />
+        <span v-if="isChecking">Verificando...</span>
+        <span v-else>Verificar Todos</span>
       </BaseButton>
     </div>
 
@@ -19,7 +21,7 @@
       <BaseCard hover>
         <div class="stat-card">
           <div class="stat-icon" style="background: var(--primary-alpha); color: var(--primary);">
-            🖥️
+            <Icon icon="mdi:desktop-classic" width="32" height="32" />
           </div>
           <div class="stat-info">
             <h3 class="stat-value">{{ categoryCount.pdv }}</h3>
@@ -31,7 +33,7 @@
       <BaseCard hover>
         <div class="stat-card">
           <div class="stat-icon" style="background: var(--warning-light); color: #856404;">
-            ⚖️
+            <Icon icon="mdi:scale" width="32" height="32" />
           </div>
           <div class="stat-info">
             <h3 class="stat-value">{{ categoryCount.balanca }}</h3>
@@ -43,7 +45,7 @@
       <BaseCard hover>
         <div class="stat-card">
           <div class="stat-icon" style="background: var(--info-light); color: var(--info);">
-            📱
+            <Icon icon="mdi:barcode-scan" width="32" height="32" />
           </div>
           <div class="stat-info">
             <h3 class="stat-value">{{ categoryCount.coletor }}</h3>
@@ -55,7 +57,7 @@
       <BaseCard hover>
         <div class="stat-card">
           <div class="stat-icon" style="background: var(--success-light); color: var(--success);">
-            🖨️
+            <Icon icon="mdi:printer" width="32" height="32" />
           </div>
           <div class="stat-info">
             <h3 class="stat-value">{{ categoryCount.impressora }}</h3>
@@ -67,7 +69,7 @@
       <BaseCard hover>
         <div class="stat-card">
           <div class="stat-icon" style="background: var(--secondary-alpha); color: var(--secondary);">
-            💻
+            <Icon icon="mdi:laptop" width="32" height="32" />
           </div>
           <div class="stat-info">
             <h3 class="stat-value">{{ categoryCount.computador }}</h3>
@@ -129,8 +131,9 @@
                   @click="handlePingDevice(device)"
                   :disabled="isChecking"
                 >
-                  <span v-if="isCheckingDevice === device.id">⏳</span>
-                  <span v-else>Ping</span>
+                  <Icon v-if="isCheckingDevice === device.id" icon="mdi:loading" class="btn-icon spinning" />
+                  <Icon v-else icon="mdi:lan-connect" class="btn-icon" />
+                  Ping
                 </BaseButton>
               </td>
             </tr>
@@ -146,7 +149,9 @@
     <div class="stats-grid">
       <BaseCard>
         <div class="stat-box">
-          <div class="stat-icon online">🟢</div>
+          <div class="stat-icon online">
+            <Icon icon="mdi:check-circle" width="32" height="32" />
+          </div>
           <div>
             <h3>{{ onlineCount }}</h3>
             <p>Dispositivos Online</p>
@@ -156,7 +161,9 @@
 
       <BaseCard>
         <div class="stat-box">
-          <div class="stat-icon offline">🔴</div>
+          <div class="stat-icon offline">
+            <Icon icon="mdi:close-circle" width="32" height="32" />
+          </div>
           <div>
             <h3>{{ offlineCount }}</h3>
             <p>Dispositivos Offline</p>
@@ -166,7 +173,9 @@
 
       <BaseCard>
         <div class="stat-box">
-          <div class="stat-icon">📊</div>
+          <div class="stat-icon">
+            <Icon icon="mdi:chart-line" width="32" height="32" />
+          </div>
           <div>
             <h3>{{ uptime }}%</h3>
             <p>Taxa de Disponibilidade</p>
@@ -183,6 +192,7 @@ import { useDevicesStore } from '../stores/devices'
 import { useNetworkCheck } from '../composables/useNetworkCheck'
 import BaseCard from '../components/common/BaseCard.vue'
 import BaseButton from '../components/common/BaseButton.vue'
+import { Icon } from '@iconify/vue'
 
 const devicesStore = useDevicesStore()
 const { isChecking, lastCheck, checkAllDevices, checkDevice, checkDevicesByCategory } = useNetworkCheck()
@@ -496,5 +506,32 @@ code {
   margin: 0;
   color: var(--gray-600);
   font-size: var(--font-size-sm);
+}
+
+.btn-icon {
+  width: 16px;
+  height: 16px;
+  margin-right: 4px;
+}
+
+.spinning {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.stat-icon.online {
+  color: var(--success);
+}
+
+.stat-icon.offline {
+  color: var(--danger);
 }
 </style>

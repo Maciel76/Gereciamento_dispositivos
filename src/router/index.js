@@ -9,43 +9,43 @@ const routes = [
     path: '/dashboard',
     name: 'Dashboard',
     component: () => import('../views/Dashboard.vue'),
-    meta: { icon: '📊', title: 'Dashboard' }
+    meta: { icon: 'mdi:view-dashboard', title: 'Dashboard' }
   },
   {
     path: '/devices',
     name: 'Devices',
     component: () => import('../views/Devices.vue'),
-    meta: { icon: '🖥️', title: 'Inventário de Dispositivos' }
+    meta: { icon: 'mdi:devices', title: 'Dispositivos' }
   },
   {
     path: '/tickets',
     name: 'Tickets',
     component: () => import('../views/Tickets.vue'),
-    meta: { icon: '🎫', title: 'Chamados Técnicos' }
+    meta: { icon: 'mdi:ticket', title: 'Chamados Técnicos' }
   },
   {
     path: '/employees',
     name: 'Employees',
     component: () => import('../views/Employees.vue'),
-    meta: { icon: '👥', title: 'Colaboradores' }
+    meta: { icon: 'mdi:account-group', title: 'Colaboradores' }
   },
   {
     path: '/network',
     name: 'Network',
     component: () => import('../views/Network.vue'),
-    meta: { icon: '🌐', title: 'Monitor de Rede' }
+    meta: { icon: 'mdi:network', title: 'Monitor de Rede' }
   },
   {
     path: '/timeline',
     name: 'Timeline',
     component: () => import('../views/Timeline.vue'),
-    meta: { icon: '⏰', title: 'Timeline de Atividades' }
+    meta: { icon: 'mdi:timeline-clock', title: 'Timeline de Atividades' }
   },
   {
     path: '/qrcode',
     name: 'QRCode',
     component: () => import('../views/QRCode.vue'),
-    meta: { icon: '🔷', title: 'Gerar QR Code' }
+    meta: { icon: 'mdi:qrcode', title: 'Gerar QR Code' }
   }
 ]
 

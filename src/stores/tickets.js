@@ -67,6 +67,8 @@ export const useTicketsStore = defineStore('tickets', () => {
   const openTickets = computed(() => tickets.value.filter(t => t.status === 'aberto').length)
   const inProgressTickets = computed(() => tickets.value.filter(t => t.status === 'em_andamento').length)
   const resolvedTickets = computed(() => tickets.value.filter(t => t.status === 'resolvido').length)
+  const closedTickets = computed(() => tickets.value.filter(t => t.status === 'encerrado').length)
+  const canceledTickets = computed(() => tickets.value.filter(t => t.status === 'cancelado').length)
 
   const ticketsByPriority = computed(() => {
     return {
@@ -81,7 +83,9 @@ export const useTicketsStore = defineStore('tickets', () => {
     return {
       aberto: openTickets.value,
       em_andamento: inProgressTickets.value,
-      resolvido: resolvedTickets.value
+      resolvido: resolvedTickets.value,
+      encerrado: closedTickets.value,
+      cancelado: canceledTickets.value
     }
   })
 
@@ -129,7 +133,9 @@ export const useTicketsStore = defineStore('tickets', () => {
         const statusLabels = {
           'aberto': 'Aberto',
           'em_andamento': 'Em Andamento',
-          'resolvido': 'Resolvido'
+          'resolvido': 'Resolvido',
+          'encerrado': 'Encerrado',
+          'cancelado': 'Cancelado'
         }
 
         activitiesStore.trackAction(
@@ -175,6 +181,8 @@ export const useTicketsStore = defineStore('tickets', () => {
     openTickets,
     inProgressTickets,
     resolvedTickets,
+    closedTickets,
+    canceledTickets,
     ticketsByPriority,
     ticketsByStatus,
     addTicket,

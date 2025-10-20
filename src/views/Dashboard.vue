@@ -5,7 +5,7 @@
       <BaseCard hover>
         <div class="stat-card">
           <div class="stat-icon" style="background: var(--primary-alpha); color: var(--primary);">
-            🖥️
+            <Icon icon="mdi:devices" width="32" height="32" />
           </div>
           <div class="stat-info">
             <h3 class="stat-value">{{ devicesStore.totalDevices }}</h3>
@@ -17,7 +17,7 @@
       <BaseCard hover>
         <div class="stat-card">
           <div class="stat-icon" style="background: var(--success-light); color: var(--success);">
-            ✅
+            <Icon icon="mdi:check-circle" width="32" height="32" />
           </div>
           <div class="stat-info">
             <h3 class="stat-value">{{ devicesStore.onlineDevices }}</h3>
@@ -29,7 +29,7 @@
       <BaseCard hover>
         <div class="stat-card">
           <div class="stat-icon" style="background: var(--danger-light); color: var(--danger);">
-            ⚠️
+            <Icon icon="mdi:alert-circle" width="32" height="32" />
           </div>
           <div class="stat-info">
             <h3 class="stat-value">{{ devicesStore.offlineDevices }}</h3>
@@ -41,7 +41,7 @@
       <BaseCard hover>
         <div class="stat-card">
           <div class="stat-icon" style="background: var(--warning-light); color: #856404;">
-            🎫
+            <Icon icon="mdi:ticket" width="32" height="32" />
           </div>
           <div class="stat-info">
             <h3 class="stat-value">{{ ticketsStore.openTickets }}</h3>
@@ -189,6 +189,7 @@ import { useTicketsStore } from '../stores/tickets'
 import { useNetworkCheck } from '../composables/useNetworkCheck'
 import BaseCard from '../components/common/BaseCard.vue'
 import BaseBadge from '../components/common/BaseBadge.vue'
+import { Icon } from '@iconify/vue'
 
 const devicesStore = useDevicesStore()
 const ticketsStore = useTicketsStore()
@@ -242,8 +243,9 @@ function getCategoryLabel(category) {
     'pdv': 'PDV',
     'balanca': 'Balança',
     'coletor': 'Coletor',
-    'rube': 'RUBE',
-    'computador': 'Computador'
+    'impressora': 'Impressora',
+    'computador': 'Computador',
+    'outros': 'Outros'
   }
   return labels[category] || category
 }

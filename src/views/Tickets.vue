@@ -6,16 +6,16 @@
         <p class="page-description">Gerencie chamados de suporte e manutenção</p>
       </div>
       <BaseButton @click="openAddModal">
-        ➕ Novo Chamado
+        <Icon icon="mdi:plus-circle" class="btn-icon" /> Novo Chamado
       </BaseButton>
     </div>
 
     <!-- Stats Cards -->
     <div class="stats-grid">
-      <BaseCard hover>
+      <BaseCard hover @click="filterByStatus('aberto')" class="clickable-card">
         <div class="stat-card">
           <div class="stat-icon" style="background: var(--danger-light); color: var(--danger);">
-            🎫
+            <Icon icon="mdi:ticket-outline" width="32" height="32" />
           </div>
           <div class="stat-info">
             <h3 class="stat-value">{{ ticketsStore.openTickets }}</h3>
@@ -24,10 +24,10 @@
         </div>
       </BaseCard>
 
-      <BaseCard hover>
+      <BaseCard hover @click="filterByStatus('em_andamento')" class="clickable-card">
         <div class="stat-card">
           <div class="stat-icon" style="background: var(--warning-light); color: #856404;">
-            ⚙️
+            <Icon icon="mdi:progress-clock" width="32" height="32" />
           </div>
           <div class="stat-info">
             <h3 class="stat-value">{{ ticketsStore.inProgressTickets }}</h3>
@@ -36,10 +36,10 @@
         </div>
       </BaseCard>
 
-      <BaseCard hover>
+      <BaseCard hover @click="filterByStatus('resolvido')" class="clickable-card">
         <div class="stat-card">
           <div class="stat-icon" style="background: var(--success-light); color: var(--success);">
-            ✅
+            <Icon icon="mdi:check-circle" width="32" height="32" />
           </div>
           <div class="stat-info">
             <h3 class="stat-value">{{ ticketsStore.resolvedTickets }}</h3>
@@ -47,7 +47,75 @@
           </div>
         </div>
       </BaseCard>
+
+      <BaseCard hover @click="filterByStatus('encerrado')" class="clickable-card">
+        <div class="stat-card">
+          <div class="stat-icon" style="background: var(--info-light); color: var(--info);">
+            <Icon icon="mdi:archive" width="32" height="32" />
+          </div>
+          <div class="stat-info">
+            <h3 class="stat-value">{{ ticketsStore.closedTickets }}</h3>
+            <p class="stat-label">Encerrados</p>
+          </div>
+        </div>
+      </BaseCard>
+
+      <BaseCard hover @click="filterByStatus('cancelado')" class="clickable-card">
+        <div class="stat-card">
+          <div class="stat-icon" style="background: var(--gray-200); color: var(--gray-700);">
+            <Icon icon="mdi:close-circle" width="32" height="32" />
+          </div>
+          <div class="stat-info">
+            <h3 class="stat-value">{{ ticketsStore.canceledTickets }}</h3>
+            <p class="stat-label">Cancelados</p>
+          </div>
+        </div>
+      </BaseCard>
     </div>
+
+    <!-- Filtros -->
+    <BaseCard>
+      <div class="filters">
+        <div class="filter-group">
+          <label>Filtrar por Status</label>
+          <select v-model="statusFilter" class="filter-select">
+            <option value="">Todos os Status</option>
+            <option value="aberto">Abertos</option>
+            <option value="em_andamento">Em Andamento</option>
+            <option value="resolvido">Resolvidos</option>
+            <option value="encerrado">Encerrados</option>
+            <option value="cancelado">Cancelados</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label>Filtrar por Prioridade</label>
+          <select v-model="priorityFilter" class="filter-select">
+            <option value="">Todas as Prioridades</option>
+            <option value="critica">Crítica</option>
+            <option value="alta">Alta</option>
+            <option value="media">Média</option>
+            <option value="baixa">Baixa</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label>Filtrar por Categoria</label>
+          <select v-model="categoryFilter" class="filter-select">
+            <option value="">Todas as Categorias</option>
+            <option value="hardware">Hardware</option>
+            <option value="software">Software</option>
+            <option value="rede">Rede</option>
+          </select>
+        </div>
+
+        <div class="filter-actions">
+          <BaseButton variant="outline" size="sm" @click="clearFilters">
+            <Icon icon="mdi:filter-off" class="btn-icon" /> Limpar Filtros
+          </BaseButton>
+        </div>
+      </div>
+    </BaseCard>
 
     <!-- Tabs -->
     <div class="tabs">
@@ -208,6 +276,17 @@
         </div>
 
         <div v-if="editingTicket" class="form-group">
+          <label>Status *</label>
+          <select v-model="formData.status" class="form-input" required>
+            <option value="aberto">Aberto</option>
+            <option value="em_andamento">Em Andamento</option>
+            <option value="resolvido">Resolvido</option>
+            <option value="encerrado">Encerrado</option>
+            <option value="cancelado">Cancelado</option>
+          </select>
+        </div>
+
+        <div v-if="editingTicket" class="form-group">
           <label>Solução</label>
           <textarea
             v-model="formData.solution"
@@ -234,6 +313,7 @@ import BaseCard from '../components/common/BaseCard.vue'
 import BaseButton from '../components/common/BaseButton.vue'
 import BaseBadge from '../components/common/BaseBadge.vue'
 import BaseModal from '../components/common/BaseModal.vue'
+import { Icon } from '@iconify/vue'
 
 const ticketsStore = useTicketsStore()
 const devicesStore = useDevicesStore()
@@ -241,6 +321,9 @@ const devicesStore = useDevicesStore()
 const showModal = ref(false)
 const editingTicket = ref(null)
 const activeTab = ref('todos')
+const statusFilter = ref('')
+const priorityFilter = ref('')
+const categoryFilter = ref('')
 
 const formData = ref({
   deviceId: '',
@@ -256,21 +339,44 @@ const tabs = computed(() => [
   { label: 'Todos', value: 'todos', count: ticketsStore.totalTickets },
   { label: 'Abertos', value: 'aberto', count: ticketsStore.openTickets },
   { label: 'Em Andamento', value: 'em_andamento', count: ticketsStore.inProgressTickets },
-  { label: 'Resolvidos', value: 'resolvido', count: ticketsStore.resolvedTickets }
+  { label: 'Resolvidos', value: 'resolvido', count: ticketsStore.resolvedTickets },
+  { label: 'Encerrados', value: 'encerrado', count: ticketsStore.closedTickets },
+  { label: 'Cancelados', value: 'cancelado', count: ticketsStore.canceledTickets }
 ])
 
 const filteredTickets = computed(() => {
-  if (activeTab.value === 'todos') {
-    return ticketsStore.tickets
+  let tickets = ticketsStore.tickets
+
+  // Filtro por tab
+  if (activeTab.value !== 'todos') {
+    tickets = tickets.filter(t => t.status === activeTab.value)
   }
-  return ticketsStore.getTicketsByStatus(activeTab.value)
+
+  // Filtro por status (dropdown)
+  if (statusFilter.value) {
+    tickets = tickets.filter(t => t.status === statusFilter.value)
+  }
+
+  // Filtro por prioridade
+  if (priorityFilter.value) {
+    tickets = tickets.filter(t => t.priority === priorityFilter.value)
+  }
+
+  // Filtro por categoria
+  if (categoryFilter.value) {
+    tickets = tickets.filter(t => t.category === categoryFilter.value)
+  }
+
+  return tickets
 })
 
 function getStatusVariant(status) {
   const variants = {
     'aberto': 'danger',
     'em_andamento': 'warning',
-    'resolvido': 'success'
+    'resolvido': 'success',
+    'encerrado': 'info',
+    'cancelado': 'light'
   }
   return variants[status] || 'light'
 }
@@ -279,9 +385,23 @@ function getStatusLabel(status) {
   const labels = {
     'aberto': 'Aberto',
     'em_andamento': 'Em Andamento',
-    'resolvido': 'Resolvido'
+    'resolvido': 'Resolvido',
+    'encerrado': 'Encerrado',
+    'cancelado': 'Cancelado'
   }
   return labels[status] || status
+}
+
+function filterByStatus(status) {
+  statusFilter.value = status
+  activeTab.value = 'todos'
+}
+
+function clearFilters() {
+  statusFilter.value = ''
+  priorityFilter.value = ''
+  categoryFilter.value = ''
+  activeTab.value = 'todos'
 }
 
 function getPriorityVariant(priority) {
@@ -372,6 +492,16 @@ function changeStatus(ticket, newStatus) {
   margin-bottom: var(--spacing-xl);
 }
 
+.clickable-card {
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.clickable-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
 .stat-card {
   display: flex;
   align-items: center;
@@ -419,6 +549,50 @@ function changeStatus(ticket, newStatus) {
 .page-description {
   color: var(--gray-600);
   margin: 0;
+}
+
+/* Filtros */
+.filters {
+  display: flex;
+  gap: var(--spacing-md);
+  align-items: flex-end;
+  flex-wrap: wrap;
+  padding: var(--spacing-lg);
+}
+
+.filter-group {
+  flex: 1;
+  min-width: 200px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.filter-group label {
+  font-weight: var(--font-weight-medium);
+  color: var(--gray-700);
+  font-size: var(--font-size-sm);
+}
+
+.filter-select {
+  padding: 8px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  font-size: var(--font-size-sm);
+  background: white;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.filter-select:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-alpha);
+}
+
+.filter-actions {
+  display: flex;
+  align-items: flex-end;
 }
 
 .tabs {
