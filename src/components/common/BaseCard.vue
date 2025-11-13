@@ -28,6 +28,8 @@ defineProps({
   box-shadow: var(--shadow);
   overflow: hidden;
   transition: var(--transition);
+  width: 100%;
+  margin: 0;
 }
 
 .card-hover:hover {
@@ -40,6 +42,16 @@ defineProps({
   border-bottom: 1px solid var(--border-color);
   font-weight: var(--font-weight-semibold);
   font-size: var(--font-size-lg);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+}
+
+.card-header h3 {
+  margin: 0;
+  flex: 1;
 }
 
 .card-body {
@@ -50,5 +62,36 @@ defineProps({
   padding: var(--spacing-lg);
   border-top: 1px solid var(--border-color);
   background: var(--gray-100);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: var(--spacing-md);
+  }
+
+  .card-body {
+    padding: var(--spacing-md);
+  }
+
+  .card-footer {
+    padding: var(--spacing-md);
+  }
+}
+
+@media (max-width: 480px) {
+  .card-header {
+    padding: var(--spacing-sm);
+  }
+
+  .card-body {
+    padding: var(--spacing-sm);
+  }
+
+  .card-footer {
+    padding: var(--spacing-sm);
+  }
 }
 </style>

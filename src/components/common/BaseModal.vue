@@ -72,16 +72,18 @@ function close() {
   background: var(--white);
   border-radius: var(--border-radius-lg);
   box-shadow: var(--shadow-xl);
-  max-height: 90vh;
+  max-height: 95vh;
   display: flex;
   flex-direction: column;
   animation: slideInRight 0.3s ease-out;
+  width: 95vw;
+  max-width: 600px;
 }
 
-.modal-sm { width: 400px; max-width: 90vw; }
-.modal-md { width: 600px; max-width: 90vw; }
-.modal-lg { width: 800px; max-width: 90vw; }
-.modal-xl { width: 1200px; max-width: 95vw; }
+.modal-sm { max-width: 90vw; width: 90vw; }
+.modal-md { max-width: 90vw; width: 90vw; }
+.modal-lg { max-width: 95vw; width: 95vw; }
+.modal-xl { max-width: 98vw; width: 98vw; }
 
 .modal-header {
   padding: var(--spacing-lg);
@@ -96,6 +98,8 @@ function close() {
   font-weight: var(--font-weight-semibold);
   margin: 0;
   color: var(--gray-900);
+  flex: 1;
+  word-break: break-word;
 }
 
 .modal-close {
@@ -109,6 +113,8 @@ function close() {
   color: var(--gray-600);
   border-radius: var(--border-radius-sm);
   transition: var(--transition);
+  flex-shrink: 0;
+  margin-left: var(--spacing-sm);
 }
 
 .modal-close:hover {
@@ -128,6 +134,7 @@ function close() {
   display: flex;
   gap: var(--spacing-sm);
   justify-content: flex-end;
+  flex-wrap: wrap;
 }
 
 /* Transitions */
@@ -157,6 +164,50 @@ function close() {
   to {
     opacity: 0;
     transform: scale(0.9);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .modal-overlay {
+    align-items: flex-end;
+    padding: var(--spacing-sm);
+  }
+  
+  .modal-container {
+    width: 100%;
+    max-height: 90vh;
+    margin: 0;
+  }
+  
+  .modal-header,
+  .modal-body,
+  .modal-footer {
+    padding: var(--spacing-md);
+  }
+  
+  .modal-footer {
+    flex-direction: column;
+  }
+  
+  .modal-footer > * {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .modal-overlay {
+    padding: var(--spacing-xs);
+  }
+  
+  .modal-header,
+  .modal-body,
+  .modal-footer {
+    padding: var(--spacing-sm);
+  }
+  
+  .modal-title {
+    font-size: var(--font-size-lg);
   }
 }
 </style>

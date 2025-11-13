@@ -283,8 +283,9 @@ onMounted(() => {
 
 <style scoped>
 .dashboard {
-  max-width: 1400px;
+  max-width: 100%;
   margin: 0 auto;
+  padding: 0;
 }
 
 .stats-grid {
@@ -330,7 +331,7 @@ onMounted(() => {
 
 .dashboard-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: var(--spacing-lg);
   margin-bottom: var(--spacing-xl);
 }
@@ -340,12 +341,15 @@ onMounted(() => {
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
 }
 
 .card-header-content h3 {
   margin: 0;
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-semibold);
+  flex: 1;
 }
 
 .link {
@@ -353,6 +357,7 @@ onMounted(() => {
   text-decoration: none;
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
+  white-space: nowrap;
 }
 
 .link:hover {
@@ -413,6 +418,8 @@ onMounted(() => {
   justify-content: space-between;
   align-items: center;
   margin-bottom: var(--spacing-sm);
+  flex-wrap: wrap;
+  gap: var(--spacing-xs);
 }
 
 .ticket-device {
@@ -431,6 +438,8 @@ onMounted(() => {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
+  gap: var(--spacing-xs);
 }
 
 .ticket-time {
@@ -440,28 +449,30 @@ onMounted(() => {
 
 .devices-table {
   overflow-x: auto;
+  width: 100%;
 }
 
 table {
   width: 100%;
   border-collapse: collapse;
+  min-width: 600px;
 }
 
 th {
   text-align: left;
-  padding: 12px;
+  padding: var(--spacing-sm);
   background: var(--gray-100);
   font-weight: var(--font-weight-semibold);
   color: var(--gray-700);
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-xs);
   border-bottom: 2px solid var(--border-color);
 }
 
 td {
-  padding: 12px;
+  padding: var(--spacing-sm);
   border-bottom: 1px solid var(--border-color);
   color: var(--gray-800);
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-xs);
 }
 
 tbody tr:hover {
@@ -476,17 +487,92 @@ code {
   font-size: var(--font-size-xs);
 }
 
+/* Responsive for mobile */
 @media (max-width: 768px) {
   .stats-grid {
     grid-template-columns: 1fr;
+    gap: var(--spacing-md);
+  }
+
+  .stat-card {
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    gap: var(--spacing-md);
+  }
+
+  .stat-icon {
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
   }
 
   .dashboard-grid {
     grid-template-columns: 1fr;
+    gap: var(--spacing-md);
+  }
+
+  .card-header-content {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .link {
+    align-self: flex-end;
+  }
+
+  .ticket-item {
+    padding: var(--spacing-md);
+  }
+
+  .ticket-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .ticket-footer {
+    flex-direction: column;
+    align-items: flex-start;
   }
 
   .devices-table {
     font-size: var(--font-size-xs);
+  }
+
+  table {
+    min-width: 100%;
+  }
+
+  th, td {
+    padding: var(--spacing-xs);
+    font-size: var(--font-size-xs);
+  }
+
+  .ticket-time {
+    font-size: var(--font-size-xs);
+  }
+}
+
+/* Extra small devices */
+@media (max-width: 480px) {
+  .stat-value {
+    font-size: var(--font-size-2xl);
+  }
+
+  .stat-label {
+    font-size: var(--font-size-xs);
+  }
+
+  .ticket-device {
+    font-size: var(--font-size-xs);
+  }
+
+  .ticket-title {
+    font-size: var(--font-size-xs);
+  }
+
+  .card-header-content h3 {
+    font-size: var(--font-size-base);
   }
 }
 </style>

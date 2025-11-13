@@ -49,6 +49,8 @@ defineEmits(['click'])
   gap: 8px;
   white-space: nowrap;
   text-decoration: none;
+  min-height: 44px; /* Ensure touch-friendly size on mobile */
+  min-width: 44px;
 }
 
 .btn:hover:not(:disabled) {
@@ -126,15 +128,50 @@ defineEmits(['click'])
 .btn-sm {
   font-size: var(--font-size-sm);
   padding: 6px 12px;
+  min-height: 36px;
 }
 
 .btn-lg {
   font-size: var(--font-size-lg);
   padding: 12px 24px;
+  min-height: 52px;
 }
 
 .btn-block {
   width: 100%;
   display: flex;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .btn {
+    padding: 10px 16px;
+    font-size: var(--font-size-sm);
+    min-height: 40px;
+  }
+  
+  .btn-sm {
+    padding: 6px 10px;
+    font-size: var(--font-size-xs);
+    min-height: 34px;
+  }
+  
+  .btn-lg {
+    padding: 12px 20px;
+    font-size: var(--font-size-base);
+    min-height: 48px;
+  }
+}
+
+@media (max-width: 480px) {
+  .btn {
+    padding: 8px 12px;
+    font-size: var(--font-size-xs);
+    min-height: 36px;
+  }
+  
+  .btn-block {
+    padding: 10px 16px;
+  }
 }
 </style>

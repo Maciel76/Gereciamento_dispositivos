@@ -24,6 +24,10 @@ defineProps({
   border-radius: 12px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  white-space: nowrap;
+  min-height: 24px;
+  min-width: 24px;
+  justify-content: center;
 }
 
 .badge-primary {
@@ -64,5 +68,20 @@ defineProps({
 .badge-dark {
   background: var(--gray-800);
   color: var(--white);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .badge {
+    padding: 3px 8px;
+    font-size: var(--font-size-xs);
+  }
+}
+
+@media (max-width: 480px) {
+  .badge {
+    padding: 2px 6px;
+    font-size: var(--font-size-xs);
+  }
 }
 </style>
